@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Zarr Capability Manifest",
+  "type": "object",
+  "properties": {
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC-3339 date"
+    },
+    "spec": {
+      "$ref": "#/$defs/Spec"
+    }
+  },
+  "required": [
+    "spec"
+  ],
+  "$defs": {
+    "Spec": {
+      "type": "object",
+      "properties": {
+        "zarr3": {
+          "$ref": "#/$defs/Zarr3"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Zarr3": {
+      "type": "object",
+      "properties": {
+        "codec": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/Codec"
+          }
+        },
+        "chunk_grid": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/ChunkGrid"
+          }
+        },
+        "chunk_key_encoding": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/ChunkKeyEncoding"
+          }
+        },
+        "data_type": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/DataType"
+          }
+        },
+        "store": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/Store"
+          }
+        },
+        "storage_transformer": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/StorageTransformer"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "Codec": {
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "decode": {
+          "type": "boolean",
+          "default": false
+        },
+        "decode_partial": {
+          "type": "boolean",
+          "default": false
+        },
+        "encode": {
+          "type": "boolean",
+          "default": false
+        },
+        "encode_partial": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "Metadata": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ChunkGrid": {
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "support": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "ChunkKeyEncoding": {
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "support": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "DataType": {
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "support": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "Store": {
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "read": {
+          "type": "boolean",
+          "default": false
+        },
+        "read_partial": {
+          "type": "boolean",
+          "default": false
+        },
+        "list": {
+          "type": "boolean",
+          "default": false
+        },
+        "write": {
+          "type": "boolean",
+          "default": false
+        },
+        "write_partial": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "StorageTransformer": {
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/Metadata"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

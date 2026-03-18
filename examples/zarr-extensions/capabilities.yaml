@@ -1,0 +1,105 @@
+last_updated: 2026-03-18
+spec:
+  zarr3:
+    codec:
+      blosc:
+        meta:
+          description:
+          url:
+        decode: true
+        decode_partial: true
+        encode: true
+        encode_partial: false
+      bytes:
+        meta:
+          description:
+          url:
+        decode: true
+        decode_partial: true
+        encode: true
+        encode_partial: true
+      crc32c:
+        meta:
+          description:
+          url:
+        decode: true
+        decode_partial: true
+        encode: true
+        encode_partial: false
+      gzip:
+        meta:
+          description:
+          url:
+        decode: true
+        decode_partial: false
+        encode: true
+        encode_partial: false
+      sharding:
+        meta:
+          description:
+          url:
+        decode: true
+        decode_partial: true
+        encode: true
+        encode_partial: true
+      transpose:
+        meta:
+          description:
+          url:
+        decode: true
+        decode_partial: true
+        encode: true
+        encode_partial: true
+    chunk_grid:
+      regular:
+        meta:
+          description:
+          url:
+        support: true
+    chunk_key_encoding:
+      default:
+        support: true
+      v2:
+        support: true
+    data_type:
+      bool:
+        support: true
+      int8:
+        support: true
+      int16:
+        support: true
+      int32:
+        support: true
+      int64:
+        support: true
+      uint8:
+        support: true
+      uint16:
+        support: true
+      uint32:
+        support: true
+      uint64:
+        support: true
+      float16:
+        support: true
+        notes: Support is optional.
+      float32:
+        support: true
+      float64:
+        support: true
+      complex64:
+        support: true
+      complex128:
+        support: true
+      r*:
+        support: true
+        notes: Support for raw bits is optional.
+    store:
+      filesystem:
+        read: true
+        read_partial: true
+        list: true
+        write: true
+        write_partial: true
+        notes: Different file systems may impose restrictions on e.g. key casing.
+    storage_transformer:
