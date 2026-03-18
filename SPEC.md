@@ -6,6 +6,18 @@ Zarr is extensible by design.
 What, then, does it mean for a tool to "support Zarr"?
 The Zarr Capability Manifest allows tools to provide human-editable, machine-readable summaries of supported features.
 
+## Definitions vs implementations
+
+This schema should be used by projects _defining_ zarr capabilities,
+and those _implementing_ it.
+
+Capability definitions should describe whether particular kinds of support are possible.
+For example, the `crc32c` codec does not allow partial encoding because a partial write will change the final checksum.
+The `gzip` codec does not allow partial decoding because of information at the start of the GZip header.
+
+Capability implementations should describe whether the functionality exists.
+For example, a new store implementation may only support complete reads and writes in its first release, with partial read and write support to be added later.
+
 ## Conventions
 
 ### Requirement levels
