@@ -5,7 +5,7 @@
   "properties": {
     "last_updated": {
       "type": "string",
-      "format": "date-time",
+      "format": "date",
       "description": "RFC-3339 date"
     },
     "spec": {

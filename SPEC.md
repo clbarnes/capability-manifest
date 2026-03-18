@@ -67,20 +67,6 @@ and so cannot be represented by Zarr metadata.
 | encode | SHOULD | boolean; default `false` | Whether encoding of full chunks is supported. |
 | encode_partial | SHOULD | boolean; default `false` | whether encoding of partial chunks is supported. |
 
-### Object: Metadata
-
-| field | necessity | type | description |
-| ----- | --------- | ---- | ----------- |
-| alias | MAY | array of string | Other keys by which this feature is known. |
-| description | MAY | string | Short description of this feature. |
-| url | MAY | string | URL to canonical description of this feature. |
-| notes | MAY | string | Information about this implementation of the feature. |
-
-Projects canonically defining a feature MUST include the `description` field, and `alias` if any are defined.
-Implementors should list the aliases recognised by the implementation.
-
-Projects implementing a feature defined elsewhere SHOULD include the `url`.
-
 ### Object: ChunkGrid
 
 | field | necessity | type | description |
@@ -122,3 +108,17 @@ Definitions of these capabilities should approximately match the Zarr v3 abstrac
 | meta | MAY | [Metadata](#object-metadata) | General information about this feature and its implementation. |
 
 At time of writing, no storage transformers definitions are known.
+
+### Object: Metadata
+
+| field | necessity | type | description |
+| ----- | --------- | ---- | ----------- |
+| alias | MAY | array of string | Other keys by which this feature is known. |
+| description | MAY | string | Short description of this feature. |
+| url | MAY | string | URL to canonical description of this feature. |
+| notes | MAY | string | Information about this implementation of the feature. |
+
+Projects canonically defining a feature MUST include the `description` field, and `alias` if any are defined.
+Implementors should list the aliases recognised by the implementation.
+
+Projects implementing a feature defined elsewhere SHOULD include the `url`.
