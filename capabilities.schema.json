@@ -8,12 +8,19 @@
       "format": "date",
       "description": "RFC-3339 date"
     },
+    "is_definition": {
+      "type": "boolean"
+    },
+    "version": {
+      "type": "integer"
+    },
     "spec": {
       "$ref": "#/$defs/Spec"
     }
   },
   "required": [
-    "spec"
+    "spec",
+    "version"
   ],
   "$defs": {
     "Spec": {

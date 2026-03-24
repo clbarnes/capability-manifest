@@ -1,5 +1,7 @@
 # yaml-language-server: $schema=../../capabilities.schema.json
 last_updated: 2026-03-18
+version: 1
+is_definition: true
 spec:
   zarr3:
     codec:
@@ -154,6 +156,9 @@ spec:
         write: true
         write_partial: true
         meta:
+          alias:
+            - file
+            - fs
           description: Zarr storage abstraction for file systems.
           url: https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
           notes: Different file systems may impose restrictions on e.g. key casing.

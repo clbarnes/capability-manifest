@@ -9,20 +9,29 @@ The Zarr Capability Manifest allows tools to provide human-editable, machine-rea
 ## Definitions vs implementations
 
 This schema should be used by projects _defining_ zarr capabilities,
-and those _implementing_ it.
+and those _implementing_ them.
 
-Capability definitions should describe whether particular kinds of support are possible.
+Capability definition manifests should describe whether particular kinds of support are possible.
 For example, the `crc32c` codec does not allow partial encoding because a partial write will change the final checksum.
 The `gzip` codec does not allow partial decoding because of information at the start of the GZip header.
 
-Capability implementations should describe whether the functionality exists.
+Capability implementation manifests should describe whether the functionality exists.
 For example, a new store implementation may only support complete reads and writes in its first release, with partial read and write support to be added later.
+
+## Store names
+
+The Zarr specification requires names for metadata items at extension points.
+As stores (and storage layers) are not currently represented by metadata items,
+they do not necessarily have canonical names or well-defined aliases.
+This specification RECOMMENDS using a URI scheme associated with the store
+(e.g. by [fsspec](https://filesystem-spec.readthedocs.io/en/latest/api.html#built-in-implementations)
+or [OpenDAL](https://docs.rs/opendal/latest/opendal/services/index.html))
 
 ## Conventions
 
 ### Requirement levels
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
 
 ### Data model
 
@@ -41,8 +50,12 @@ Representation of the root object of the Zarr Capability Manifest.
 
 | field | necessity | type | description |
 | ----- | --------- | ---- | ----------- |
+| version | MUST | integer | |
+| is_definition | SHOULD | boolean, default `false` | Whether this manifest represents capability definitions (rather than implementation capabilities). |
 | last_updated | SHOULD | string | RFC-3339 date |
 | spec | MUST | [Spec](#object-spec) | |
+
+Manifests with different values for `version` _or_ `is_definition` MUST not be merged or directly compared.
 
 ### Object: Spec
 
@@ -130,7 +143,7 @@ At time of writing, no storage transformers definitions are known.
 | url | MAY | string | URL to canonical description of this feature. |
 | notes | MAY | string | Information about this implementation of the feature. |
 
-Projects canonically defining a feature MUST include the `description` field, and `alias` if any are defined.
-Implementors should list the aliases recognised by the implementation.
+Definition manifests ([`Root.is_definition = true`](#object-root)) SHOULD include the `description` field, and `alias` if any are defined.
 
-Projects implementing a feature defined elsewhere SHOULD include the `url`.
+Implementation manifests SHOULD include the `url`,
+and SHOULD list any aliases recognised by the implementation.
