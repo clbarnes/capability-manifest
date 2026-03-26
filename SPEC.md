@@ -53,97 +53,23 @@ Representation of the root object of the Zarr Capability Manifest.
 | version | MUST | integer | |
 | is_definition | SHOULD | boolean, default `false` | Whether this manifest represents capability definitions (rather than implementation capabilities). |
 | last_updated | SHOULD | string | RFC-3339 date |
-| spec | MUST | [Spec](#object-spec) | |
+| capabilities | MUST | array of [Capability](#object-capability) | |
 
 Manifests with different values for `version` _or_ `is_definition` MUST not be merged or directly compared.
 
-### Object: Spec
-
-Set of root specifications supported by a given tool.
+### Object: Capability
 
 | field | necessity | type | description |
 | ----- | --------- | ---- | ----------- |
-| zarr3 | SHOULD | [Zarr3](#object-zarr3) | |
+| key | MUST | string | SHOULD use `/`-delimited namespacing |
+| description | MAY | string | Free text description of feature or level of support |
+| url | MAY | string | URL to definition of capability |
+| support | MAY | boolean, default `false` | Whether this capability is supported |
 
-### Object: Zarr3
+Definition manifests SHOULD include the `description` and `url` keys.
 
-Feature groups belonging to the Zarr v3 specification.
+Implementation manifests SHOULD include the `support` key.
 
-These are mainly referred to in the Zarr specification as extension points.
-Note that stores are not strictly extension points because they describe how the data is accessed,
-and so cannot be represented by Zarr metadata.
-
-| field | necessity | type | description |
-| ----- | --------- | ---- | ----------- |
-| codec | MAY | Map of [Codec](#object-codec) | |
-| chunk_grid | MAY | Map of [ChunkGrid](#object-chunkgrid) | |
-| chunk_key_encoding | MAY | Map of [ChunkKeyEncoding](#object-chunkkeyencoding) | |
-| data_type | MAY | Map of [DataType](#object-datatype) | |
-| store | MAY | Map of [Store](#object-store) | |
-| storage_transformer | MAY | Map of [StorageTransformer](#object-storagetransformer) | |
-
-### Object: Codec
-
-| field | necessity | type | description |
-| ----- | --------- | ---- | ----------- |
-| meta | MAY | [Metadata](#object-metadata) | General information about this feature and its implementation. |
-| decode | SHOULD | boolean; default `false` | Whether decoding of whole chunks is supported. |
-| decode_partial | SHOULD | boolean; default `false` | Whether decoding of part of a chunk is supported. |
-| encode | SHOULD | boolean; default `false` | Whether encoding of full chunks is supported. |
-| encode_partial | SHOULD | boolean; default `false` | whether encoding of partial chunks is supported. |
-
-### Object: ChunkGrid
-
-| field | necessity | type | description |
-| ----- | --------- | ---- | ----------- |
-| meta | MAY | [Metadata](#object-metadata) | General information about this feature and its implementation. |
-| support | SHOULD | boolean; default `false` | Whether this feature is supported. |
-
-### Object: ChunkKeyEncoding
-
-| field | necessity | type | description |
-| ----- | --------- | ---- | ----------- |
-| meta | MAY | [Metadata](#object-metadata) | General information about this feature and its implementation. |
-| support | SHOULD | boolean; default `false` | Whether this feature is supported. |
-
-### Object: DataType
-
-| field | necessity | type | description |
-| ----- | --------- | ---- | ----------- |
-| meta | MAY | [Metadata](#object-metadata) | General information about this feature and its implementation. |
-| support | SHOULD | boolean; default `false` | Whether this feature is supported. |
-
-### Object: Store
-
-| field | necessity | type | description |
-| ----- | --------- | ---- | ----------- |
-| meta | MAY | [Metadata](#object-metadata) | General information about this feature and its implementation. |
-| read | SHOULD | boolean; default `false` | Whether this store can be used to read whole chunks. |
-| read_partial | SHOULD | boolean; default `false` | Whether this store can be used to read ranges within chunks. |
-| list | SHOULD | boolean; default `false` | Whether this store can be used to list storage keys and prefixes. |
-| write | SHOULD | boolean; default `false` | Whether this store can be used to write whole chunks. |
-| write_partial | SHOULD | boolean; default `false` | Whether this store can be used to write ranges within chunks. |
-
-Definitions of these capabilities should approximately match the Zarr v3 abstract storage interface.
-
-### Object: StorageTransformer
-
-| field | necessity | type | description |
-| ----- | --------- | ---- | ----------- |
-| meta | MAY | [Metadata](#object-metadata) | General information about this feature and its implementation. |
-
-At time of writing, no storage transformers definitions are known.
-
-### Object: Metadata
-
-| field | necessity | type | description |
-| ----- | --------- | ---- | ----------- |
-| alias | MAY | array of string | Other keys by which this feature is known. |
-| description | MAY | string | Short description of this feature. |
-| url | MAY | string | URL to canonical description of this feature. |
-| notes | MAY | string | Information about this implementation of the feature. |
-
-Definition manifests ([`Root.is_definition = true`](#object-root)) SHOULD include the `description` field, and `alias` if any are defined.
-
-Implementation manifests SHOULD include the `url`,
-and SHOULD list any aliases recognised by the implementation.
+Aliases for a group of features SHOULD be listed as a feature.
+For example, for feature `a/b/c`, if `b` has an alias `bee`,
+add a feature `a/b/alias/bee`.

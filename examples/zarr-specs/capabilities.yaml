@@ -2,163 +2,151 @@
 last_updated: 2026-03-18
 version: 1
 is_definition: true
-spec:
-  zarr3:
-    codec:
-      blosc:
-        meta:
-          description: Bytes-to-bytes codec using blosc.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/blosc/index.html
-        decode: true
-        decode_partial: true
-        encode: true
-        encode_partial: false
-      bytes:
-        meta:
-          description: Array-to-bytes codec defining endianness of multi-byte types.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/bytes/index.html
-        decode: true
-        decode_partial: true
-        encode: true
-        encode_partial: true
-      crc32c:
-        meta:
-          description: Bytes-to-bytes codec providing fast checksums.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/crc32c/index.html
-        decode: true
-        decode_partial: true
-        encode: true
-        encode_partial: false
-      gzip:
-        meta:
-          description: Bytes-to-bytes codec for compression with broad support.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/gzip/index.html
-        decode: true
-        decode_partial: false
-        encode: true
-        encode_partial: false
-      sharding:
-        meta:
-          description: Array-to-bytes codec for efficient random access within chunks.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/sharding-indexed/index.html
-        decode: true
-        decode_partial: true
-        encode: true
-        encode_partial: true
-      transpose:
-        meta:
-          description: Array-to-array codec for changing memory representation of chunks.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/transpose/index.html
-        decode: true
-        decode_partial: true
-        encode: true
-        encode_partial: true
-    chunk_grid:
-      regular:
-        meta:
-          description: Every chunk has identical shape.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/chunk-grids/regular-grid/index.html
-        support: true
-    chunk_key_encoding:
-      default:
-        meta:
-          description: Chunks exist under a `c/` storage prefix, with an extra storage prefix per dimension.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/chunk-key-encodings/default/index.html
-        support: true
-      v2:
-        meta:
-          description: Chunking compatible with Zarr v2.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/chunk-key-encodings/v2/index.html
-        support: true
-    data_type:
-      bool:
-        meta:
-          description: 1-byte boolean where 0 is false and anything else is true.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      int8:
-        meta:
-          description: 1-byte signed integer.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      int16:
-        meta:
-          description: 2-byte signed integer.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      int32:
-        meta:
-          description: 4-byte signed integer.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      int64:
-        meta:
-          description: 8-byte signed integer.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      uint8:
-        meta:
-          description: 1-byte unsigned integer.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      uint16:
-        meta:
-          description: 2-byte unsigned integer.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      uint32:
-        meta:
-          description: 4-byte unsigned integer.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      uint64:
-        meta:
-          description: 8-byte unsigned integer.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      float16:
-        meta:
-          description: IEEE 754 half-precision floating point; sign bit, 5 bits exponent, 10 bits mantissa
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-          notes: Support is optional.
-        support: true
-      float32:
-        meta:
-          description: IEEE 754 single-precision floating point; sign bit, 8 bits exponent, 23 bits mantissa
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      float64:
-        meta:
-          description: IEEE 754 double-precision floating point; sign bit, 11 bits exponent, 52 bits mantissa
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      complex64:
-        meta:
-          description: real and complex components are each IEEE 754 single-precision floating point
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      complex128:
-        meta:
-          description: real and complex components are each IEEE 754 double-precision floating point
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-        support: true
-      r*:
-        meta:
-          description: raw bits, variable size given by *, limited to be a multiple of 8
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
-          notes: Support for raw bits is optional.
-        support: true
-    store:
-      filesystem:
-        read: true
-        read_partial: true
-        list: true
-        write: true
-        write_partial: true
-        meta:
-          alias:
-            - file
-            - fs
-          description: Zarr storage abstraction for file systems.
-          url: https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
-          notes: Different file systems may impose restrictions on e.g. key casing.
+capabilities:
+  - key: zarr/v3/codec/blosc/decode
+    description: Decode entire chunks with the blosc bytes-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/blosc/index.html
+  - key: zarr/v3/codec/blosc/decode_partial
+    description: Decode partial chunks with the blosc bytes-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/blosc/index.html
+  - key: zarr/v3/codec/blosc/encode
+    description: Encode partial chunks with the blosc bytes-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/blosc/index.html
+  - key: zarr/v3/codec/blosc/encode_partial
+    description: Encode partial chunks with the blosc bytes-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/blosc/index.html
+  - key: zarr/v3/codec/bytes/decode
+    description: Decode entire chunks with the bytes array-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/bytes/index.html
+  - key: zarr/v3/codec/bytes/decode_partial
+    description: Decode partial chunks with the bytes array-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/bytes/index.html
+  - key: zarr/v3/codec/bytes/encode
+    description: Encode entire chunks with the bytes array-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/bytes/index.html
+  - key: zarr/v3/codec/bytes/encode_partial
+    description: Encode partial chunks with the bytes array-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/bytes/index.html
+  - key: zarr/v3/codec/crc32c/decode
+    description: Decode entire chunks with the crc32c bytes-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/crc32c/index.html
+  - key: zarr/v3/codec/crc32c/decode_partial
+    description: Decode partial chunks with the crc32c bytes-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/crc32c/index.html
+  - key: zarr/v3/codec/crc32c/encode
+    description: Encode entire chunks with the crc32c bytes-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/crc32c/index.html
+  - key: zarr/v3/codec/crc32c/encode_partial
+    description: Encode partial chunks with the crc32c bytes-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/crc32c/index.html
+  - key: zarr/v3/codec/gzip/decode
+    description: Decode entire chunks with the gzip bytes-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/gzip/index.html
+  - key: zarr/v3/codec/gzip/decode_partial
+    description: Decode partial chunks with the gzip bytes-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/gzip/index.html
+  - key: zarr/v3/codec/gzip/encode
+    description: Encode entire chunks with the gzip bytes-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/gzip/index.html
+  - key: zarr/v3/codec/gzip/encode_partial
+    description: Encode partial chunks with the gzip bytes-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/gzip/index.html
+  - key: zarr/v3/codec/sharding/decode
+    description: Decode entire chunks with the sharding array-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/sharding-indexed/index.html
+  - key: zarr/v3/codec/sharding/decode_partial
+    description: Decode partial chunks with the sharding array-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/sharding-indexed/index.html
+  - key: zarr/v3/codec/sharding/encode
+    description: Encode entire chunks with the sharding array-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/sharding-indexed/index.html
+  - key: zarr/v3/codec/sharding/encode_partial
+    description: Encode partial chunks with the sharding array-to-bytes codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/sharding-indexed/index.html
+  - key: zarr/v3/codec/transpose/decode
+    description: Decode entire chunks with the transpose array-to-array codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/transpose/index.html
+  - key: zarr/v3/codec/transpose/decode_partial
+    description: Decode partial chunks with the transpose array-to-array codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/transpose/index.html
+  - key: zarr/v3/codec/transpose/encode
+    description: Encode entire chunks with the transpose array-to-array codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/transpose/index.html
+  - key: zarr/v3/codec/transpose/encode_partial
+    description: Encode partial chunks with the transpose array-to-array codec.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/codecs/transpose/index.html
+  - key: zarr/v3/chunk_grid/regular
+    description: Every chunk has identical shape.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/chunk-grids/regular-grid/index.html
+  - key: zarr/v3/chunk_key_encoding/default
+    description: Chunks exist under a `c/` storage prefix, with an extra storage prefix per dimension.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/chunk-key-encodings/default/index.html
+  - key: zarr/v3/chunk_key_encoding/v2
+    description: Chunking compatible with Zarr v2.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/chunk-key-encodings/v2/index.html
+  - key: zarr/v3/data_type/bool
+    description: 1-byte boolean where 0 is false and anything else is true.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/int8
+    description: 1-byte signed integer.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/int16
+    description: 2-byte signed integer.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/int32
+    description: 4-byte signed integer.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/int64
+    description: 8-byte signed integer.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/uint8
+    description: 1-byte unsigned integer.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/uint16
+    description: 2-byte unsigned integer.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/uint32
+    description: 4-byte unsigned integer.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/uint64
+    description: 8-byte unsigned integer.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/float16
+    description: IEEE 754 half-precision floating point; sign bit, 5 bits exponent, 10 bits mantissa. Support is optional.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/float32
+    description: IEEE 754 single-precision floating point; sign bit, 8 bits exponent, 23 bits mantissa
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/float64
+    description: IEEE 754 double-precision floating point; sign bit, 11 bits exponent, 52 bits mantissa
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/complex64
+    description: Real and complex components are each IEEE 754 single-precision floating point.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/complex128
+    description: Real and complex components are each IEEE 754 double-precision floating point.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/data_type/r*
+    description: Raw bits, variable size given by *, limited to be a multiple of 8. Support is optional.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/data-types/index.html#core-data-types
+  - key: zarr/v3/store/filesystem/read
+    description: Read entire chunks from filesystem storage.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
+  - key: zarr/v3/store/filesystem/read_partial
+    description: Read partial chunks from filesystem storage.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
+  - key: zarr/v3/store/filesystem/list
+    description: List storage keys and prefixes from filesystem storage.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
+  - key: zarr/v3/store/filesystem/write
+    description: Write entire chunks to filesystem storage.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
+  - key: zarr/v3/store/filesystem/write_partial
+    description: Write partial chunks to filesystem storage.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
+  - key: zarr/v3/store/filesystem/alias/file
+    description: Alias for filesystem store.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
+  - key: zarr/v3/store/filesystem/alias/fs
+    description: Alias for filesystem store.
+    url: https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html
