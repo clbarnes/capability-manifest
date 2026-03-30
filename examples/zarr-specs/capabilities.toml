@@ -2,6 +2,15 @@
 version = 1
 imports = []
 
+# Note: Store names
+#
+# The Zarr specification requires names for metadata items at extension points.
+# As stores (and storage layers) are not currently represented by metadata items,
+# they do not necessarily have canonical names or well-defined aliases.
+# This specification RECOMMENDS using as a key a URI scheme associated with the store
+# (e.g. by [fsspec](https://filesystem-spec.readthedocs.io/en/latest/api.html#built-in-implementations)
+# or [OpenDAL](https://docs.rs/opendal/latest/opendal/services/index.html))
+
 [capabilities."zarr/v3/codec/blosc/decode"]
 description = "Decode entire chunks with the blosc bytes-to-bytes codec."
 url = "https://zarr-specs.readthedocs.io/en/latest/v3/codecs/blosc/index.html"
@@ -191,9 +200,9 @@ description = "Write partial chunks to filesystem storage."
 url = "https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html"
 
 [capabilities."zarr/v3/store/filesystem/alias/file"]
-description = "Alias for filesystem store."
+description = "Alias for filesystem store, in common use for filesystem URLs."
 url = "https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html"
 
 [capabilities."zarr/v3/store/filesystem/alias/fs"]
-description = "Alias for filesystem store."
+description = "Alias for filesystem store, used by OpenDAL."
 url = "https://zarr-specs.readthedocs.io/en/latest/v3/stores/filesystem/index.html"

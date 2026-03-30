@@ -1,24 +1,26 @@
-# Capability Manifest Specification
+# Capability Manifest Specification Version 1
 
 ## Motivation
 
-Zarr is extensible by design.
-What, then, does it mean for a tool to "support Zarr"?
-The Zarr Capability Manifest allows tools to provide human-editable, machine-readable summaries of supported features.
+Some functional specifications define a broad set of capabilities;
+implementations of these specifications may support only a subset of them.
+
+Additionally, some specifications allow for extension.
+
+Capability manifests allow other specifications to lay out a well-defined list of capabilities,
+and implementors to clearly specify which capabilities are supported,
+in a format which is easy for humans and machines to read and write.
+
+Extension authors can then define their own capabilities,
+which can then be implemented elsewhere.
+
+This project was originally inspired by the [Zarr ecosystem](https://zarr.dev/),
+but is context-agnostic.
 
 ## Definitions vs implementations
 
 This schema should be used both by projects _defining_ capabilities,
 and those _implementing_ them.
-
-## Store names
-
-The Zarr specification requires names for metadata items at extension points.
-As stores (and storage layers) are not currently represented by metadata items,
-they do not necessarily have canonical names or well-defined aliases.
-This specification RECOMMENDS using a URI scheme associated with the store
-(e.g. by [fsspec](https://filesystem-spec.readthedocs.io/en/latest/api.html#built-in-implementations)
-or [OpenDAL](https://docs.rs/opendal/latest/opendal/services/index.html))
 
 ## Conventions
 
@@ -29,6 +31,13 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ### Data model
 
 This specification is defined in terms of the [TOML 1.1](https://toml.io/en/v1.1.0) data model.
+Capability manifests SHOULD be accessible in TOML format.
+
+### File name
+
+Capability manifest file names SHOULD end with the `.toml` suffix.
+
+Capability manifests SHOULD be named `capabilities.toml`.
 
 ## Object specifications
 
@@ -38,8 +47,8 @@ Representation of the root object of the Zarr Capability Manifest.
 
 | field | necessity | type | description |
 | ----- | --------- | ---- | ----------- |
-| version | MUST | integer | |
-| imports | MAY | array of string | IRI references to other capability manifests to be imported into this one |
+| version | MUST | integer | Capability Manifest specification version |
+| imports | MAY | array of string | IRI References to other capability manifests to be imported into this one |
 | capabilities | MUST | table of [Capability](#object-capability) | |
 
 Manifests with different values for `version` MUST not be merged or directly compared.
@@ -47,8 +56,10 @@ Manifests with different values for `version` MUST not be merged or directly com
 The keys of the `capabilities` table are canonical identifiers of capabilities/ features.
 They SHOULD use `/`-separated namespaces; for example, to define the partial decoding capability of the blosc codec in the third version of the Zarr specification, the key could look like `zarr/v3/codec/blosc/encode_partial`.
 
+Keys components SHOULD use `snake_case` unless this conflicts with an existing naming scheme.
+
 Capabilities or groups of capabilities with aliases can include that alias as a capability.
-For example, if `blosc1` was an acceptable alias for the example above,
+For example, if `blosc1` was an acceptable alias for `blosc` in the example above,
 the resulting capability key could be `zarr/v3/codec/blosc/alias/blosc1`.
 
 ### Object: Capability
@@ -63,17 +74,13 @@ Definition manifests SHOULD include the `description` and `url` keys.
 
 Implementation manifests SHOULD include the `support` key.
 
-Aliases for a group of features SHOULD be listed as a feature.
-For example, for feature `a/b/c`, if `b` has an alias `bee`,
-add a feature `a/b/alias/bee`.
-
 ## Merging manifests
 
 A list of manifests `[m0, m1, m2, ..., mN]` MAY be merged into a single manifest if they have the same `version`.
 The following algorithm MUST be used:
 
 - resolve each manifest's `imports` where possible
-  - relative imports MUST be resolved unless they belong to the leftmost manifest
+  - relative imports MUST be resolved unless they belong to the leftmost manifest `m0`
 - traverse the list from left to right
   - add any new keys to the merged `capabilities` table
   - if the key exists, overwrite the existing capability fields with new values where:
@@ -99,8 +106,40 @@ Imports are [IRI References](https://datatracker.ietf.org/doc/html/rfc3987),
 which SHOULD also be locators,
 and SHOULD either be relative OR use the `https` or `file` schemes.
 Clients SHOULD resolve these IRIs to contents as appropriate to the scheme.
-Relative IRI References MUST be resolved against the manifest being parsed.
 
 The resulting manifest MUST be the result of merging the manifests [as described above](#merging-manifests),
 starting with the contents of this manifest,
 followed by the imported manifests in the given order.
+
+### Relative imports
+
+Relative IRI References MUST be resolved against the URL of the manifest being parsed.
+
+Note that relative file paths are thought about in the context of the parent directory of a file,
+due to conventions around working directories.
+Relative IRIs are resolved against the last component of the base IRI path,
+which in this case includes the manifest file name.
+
+For example, for a layout
+
+```text
+root/
+  subdir/
+    capabilities.toml
+    sibling.toml
+    subsubdir/
+      nibling.toml
+  publing.toml
+```
+
+where `capabilities.toml` should import all of the other .toml files,
+the imports should look like
+
+```toml
+version = 1
+imports = [
+  "../sibling.toml",
+  "../subsubdir/nibling.toml",
+  "../../pibling.toml",
+]
+```
