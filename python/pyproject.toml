@@ -1,0 +1,20 @@
+[project]
+name = "capman"
+version = "0.1.0"
+description = "Capability Manifest implementation for python"
+readme = "README.md"
+authors = [{ name = "Chris Barnes", email = "chris.barnes@gerbi-gmb.de" }]
+requires-python = ">=3.12"
+dependencies = [
+  "requests>=2.33.0",
+  "tabulate>=0.10.0",
+  "tomli-w>=1.2.0",
+  "typer>=0.24.1",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.8,<0.10.0"]
+build-backend = "uv_build"
+
+[project.scripts]
+capman = "capman.cli.main:main"

@@ -1,4 +1,4 @@
-# Zarr Capability Manifest Specification
+# Capability Manifest Specification
 
 ## Motivation
 
@@ -8,15 +8,8 @@ The Zarr Capability Manifest allows tools to provide human-editable, machine-rea
 
 ## Definitions vs implementations
 
-This schema should be used by projects _defining_ zarr capabilities,
+This schema should be used both by projects _defining_ capabilities,
 and those _implementing_ them.
-
-Capability definition manifests should describe whether particular kinds of support are possible.
-For example, the `crc32c` codec does not allow partial encoding because a partial write will change the final checksum.
-The `gzip` codec does not allow partial decoding because of information at the start of the GZip header.
-
-Capability implementation manifests should describe whether the functionality exists.
-For example, a new store implementation may only support complete reads and writes in its first release, with partial read and write support to be added later.
 
 ## Store names
 
@@ -35,12 +28,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ### Data model
 
-This specification is largely defined using the JSON data model,
-with the expectation that data is encoded using YAML 1.2+ (a superset of JSON).
-
-The model is extended to include Maps.
-These are JSON objects whose keys can be any (string) value,
-and values are all the same type.
+This specification is defined in terms of the [TOML 1.1](https://toml.io/en/v1.1.0) data model.
 
 ## Object specifications
 
@@ -51,17 +39,22 @@ Representation of the root object of the Zarr Capability Manifest.
 | field | necessity | type | description |
 | ----- | --------- | ---- | ----------- |
 | version | MUST | integer | |
-| is_definition | SHOULD | boolean, default `false` | Whether this manifest represents capability definitions (rather than implementation capabilities). |
-| last_updated | SHOULD | string | RFC-3339 date |
-| capabilities | MUST | array of [Capability](#object-capability) | |
+| imports | MAY | array of string | IRI references to other capability manifests to be imported into this one |
+| capabilities | MUST | table of [Capability](#object-capability) | |
 
-Manifests with different values for `version` _or_ `is_definition` MUST not be merged or directly compared.
+Manifests with different values for `version` MUST not be merged or directly compared.
+
+The keys of the `capabilities` table are canonical identifiers of capabilities/ features.
+They SHOULD use `/`-separated namespaces; for example, to define the partial decoding capability of the blosc codec in the third version of the Zarr specification, the key could look like `zarr/v3/codec/blosc/encode_partial`.
+
+Capabilities or groups of capabilities with aliases can include that alias as a capability.
+For example, if `blosc1` was an acceptable alias for the example above,
+the resulting capability key could be `zarr/v3/codec/blosc/alias/blosc1`.
 
 ### Object: Capability
 
 | field | necessity | type | description |
 | ----- | --------- | ---- | ----------- |
-| key | MUST | string | SHOULD use `/`-delimited namespacing |
 | description | MAY | string | Free text description of feature or level of support |
 | url | MAY | string | URL to definition of capability |
 | support | MAY | boolean, default `false` | Whether this capability is supported |
@@ -73,3 +66,41 @@ Implementation manifests SHOULD include the `support` key.
 Aliases for a group of features SHOULD be listed as a feature.
 For example, for feature `a/b/c`, if `b` has an alias `bee`,
 add a feature `a/b/alias/bee`.
+
+## Merging manifests
+
+A list of manifests `[m0, m1, m2, ..., mN]` MAY be merged into a single manifest if they have the same `version`.
+The following algorithm MUST be used:
+
+- resolve each manifest's `imports` where possible
+  - relative imports MUST be resolved unless they belong to the leftmost manifest
+- traverse the list from left to right
+  - add any new keys to the merged `capabilities` table
+  - if the key exists, overwrite the existing capability fields with new values where:
+    - the existing `description` is omitted
+    - the existing `url` is omitted
+    - the existing `support` is omitted; additionally `false` should be overwritten if the new value is `true`
+
+## Imports
+
+Capability manifests MAY list other manifests whose capabilities they inherit.
+This is useful:
+
+- when support for a set of features comes from some underlying library;
+  import the library's capability manifest to avoid duplication
+- when your own project is split up into subprojects, which each implement some subset of the total;
+  define each subproject's capabilities and import them at the root
+- where capabilities are defined elsewhere with descriptions and URLs,
+  and you want those descriptions and URLs reflected in your manifest without copy-and-pasting them
+- where you want your manifest to explicitly list features which are defined in some specification,
+  but not implemented in your project
+
+Imports are [IRI References](https://datatracker.ietf.org/doc/html/rfc3987),
+which SHOULD also be locators,
+and SHOULD either be relative OR use the `https` or `file` schemes.
+Clients SHOULD resolve these IRIs to contents as appropriate to the scheme.
+Relative IRI References MUST be resolved against the manifest being parsed.
+
+The resulting manifest MUST be the result of merging the manifests [as described above](#merging-manifests),
+starting with the contents of this manifest,
+followed by the imported manifests in the given order.

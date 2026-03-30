@@ -3,20 +3,19 @@
   "title": "Zarr Capability Manifest",
   "type": "object",
   "properties": {
-    "last_updated": {
-      "type": "string",
-      "format": "date",
-      "description": "RFC-3339 date"
-    },
-    "is_definition": {
-      "type": "boolean"
-    },
     "version": {
       "type": "integer"
     },
-    "capabilities": {
+    "imports": {
       "type": "array",
       "items": {
+        "type": "string"
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": {
         "$ref": "#/$defs/Capability"
       }
     }
@@ -29,9 +28,6 @@
     "Capability": {
       "type": "object",
       "properties": {
-        "key": {
-          "type": "string"
-        },
         "description": {
           "type": "string"
         },
@@ -42,10 +38,7 @@
         "support": {
           "type": "boolean"
         }
-      },
-      "required": [
-        "key"
-      ]
+      }
     }
   }
 }

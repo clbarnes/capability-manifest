@@ -13,8 +13,3 @@ Users can then easily determine whether a particular tool is suitable for their 
 Tools could also provide the capability manifest as part of their API.
 
 Third parties (e.g. downstream dependants, or projects which compare tools' compatibility) can then easily access the manifest in a standardised format.
-
-## Why YAML?
-
-Every time I use YAML in a project I am compelled to remind people [not to use YAML](https://noyaml.com/), where it can be avoided.
-Unfortunately, its broad support and human-accessibility of deeply nested data makes it one of the better formats available for this application.
