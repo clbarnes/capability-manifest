@@ -41,9 +41,9 @@ Capability manifests SHOULD be named `capabilities.toml`.
 
 ## Object specifications
 
-### Object: Root
+### Object: CapabilityManifest
 
-Representation of the root object of the Zarr Capability Manifest.
+Representation of the root object of the capability manifest.
 
 | field | necessity | type | description |
 | ----- | --------- | ---- | ----------- |
