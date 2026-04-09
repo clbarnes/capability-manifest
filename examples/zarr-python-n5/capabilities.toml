@@ -1,7 +1,7 @@
-#:schema https://raw.githubusercontent.com/clbarnes/capability-manifest/refs/heads/main/capabilities.schema.json
+#:schema ../../capabilities.schema.json
 version = 1
 imports = [
-  "https://raw.githubusercontent.com/clbarnes/capability-manifest/refs/heads/main/examples/zarr-extensions/codecs/n5_default/capabilities.toml",
+  "../../zarr-extensions/codecs/n5_default/capabilities.toml",
 ]
 
 [capabilities."zarr/v3/codec/n5_default/decode"]

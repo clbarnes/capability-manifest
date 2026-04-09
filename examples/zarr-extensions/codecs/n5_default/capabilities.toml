@@ -1,4 +1,4 @@
-#:schema https://raw.githubusercontent.com/clbarnes/capability-manifest/refs/heads/main/capabilities.schema.json
+#:schema ../../../../capabilities.schema.json
 version = 1
 
 [capabilities."zarr/v3/codec/n5_default/decode"]
