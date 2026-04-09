@@ -9,7 +9,7 @@
     "imports": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "iri-reference"
       }
     },
     "capabilities": {

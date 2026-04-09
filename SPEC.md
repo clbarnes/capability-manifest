@@ -132,7 +132,7 @@ root/
   publing.toml
 ```
 
-where `capabilities.toml` should import all of the other .toml files,
+where `capabilities.toml` should import all of the other `.toml` files,
 the imports should look like
 
 ```toml
