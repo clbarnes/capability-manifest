@@ -9,7 +9,8 @@
     "imports": {
       "type": "array",
       "items": {
-        "type": "iri-reference"
+        "type": "string",
+        "format": "iri-reference"
       }
     },
     "capabilities": {
