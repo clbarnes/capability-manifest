@@ -1,4 +1,4 @@
-#:schema ../../capabilities.schema.json
+#:schema https://raw.githubusercontent.com/clbarnes/capability-manifest/refs/heads/main/capabilities.schema.json
 version = 1
 imports = []
 

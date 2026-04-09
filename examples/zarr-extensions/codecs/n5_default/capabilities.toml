@@ -1,0 +1,18 @@
+#:schema https://raw.githubusercontent.com/clbarnes/capability-manifest/refs/heads/main/capabilities.schema.json
+version = 1
+
+[capabilities."zarr/v3/codec/n5_default/decode"]
+description = "Decode a default-mode N5 block; only possible if all wrapped codecs also support decoding."
+url = "https://github.com/zarr-developers/zarr-extensions/tree/main/codecs/n5_default"
+
+[capabilities."zarr/v3/codec/n5_default/decode_partial"]
+description = "Decode a default-mode N5 block; only possible if all wrapped codecs also support partial decoding."
+url = "https://github.com/zarr-developers/zarr-extensions/tree/main/codecs/n5_default"
+
+[capabilities."zarr/v3/codec/n5_default/encode"]
+description = "Encode part of a default-mode N5 block; only possible if all wrapped codecs also support encoding."
+url = "https://github.com/zarr-developers/zarr-extensions/tree/main/codecs/n5_default"
+
+[capabilities."zarr/v3/codec/n5_default/encode_partial"]
+description = "Decode a default-mode N5 block; only possible if all wrapped codecs also support partial encoding."
+url = "https://github.com/zarr-developers/zarr-extensions/tree/main/codecs/n5_default"
