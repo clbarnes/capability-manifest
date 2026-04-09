@@ -79,7 +79,7 @@ Implementation manifests SHOULD include the `support` key.
 A list of manifests `[m0, m1, m2, ..., mN]` MAY be merged into a single manifest if they have the same `version`.
 The following algorithm MUST be used:
 
-- resolve each manifest's `imports` where possible
+- resolve each manifest's `imports` where possible, from left to right
   - relative imports MUST be resolved unless they belong to the leftmost manifest `m0`
 - traverse the list from left to right
   - add any new keys to the merged `capabilities` table
@@ -87,6 +87,9 @@ The following algorithm MUST be used:
     - the existing `description` is omitted
     - the existing `url` is omitted
     - the existing `support` is omitted; additionally `false` should be overwritten if the new value is `true`
+
+Merges MUST be processed from left to right,
+as the order may change the final result.
 
 ## Imports
 
@@ -110,6 +113,8 @@ Clients SHOULD resolve these IRIs to contents as appropriate to the scheme.
 The resulting manifest MUST be the result of merging the manifests [as described above](#merging-manifests),
 starting with the contents of this manifest,
 followed by the imported manifests in the given order.
+As with all merges, the `imports` array is order-sensitive.
+Imported manifests which themselves import other manifests MUST be resolved in depth-first preorder.
 
 ### Relative imports
 
