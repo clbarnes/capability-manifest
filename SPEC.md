@@ -54,20 +54,26 @@ Representation of the root object of the capability manifest.
 Manifests with different values for `version` MUST not be merged or directly compared.
 
 The keys of the `capabilities` table are canonical identifiers of capabilities/ features.
-They SHOULD use `/`-separated namespaces; for example, to define the partial decoding capability of the blosc codec in the third version of the Zarr specification, the key could look like `zarr/v3/codec/blosc/encode_partial`.
+They SHOULD use `/`-separated namespace.
+Key components SHOULD use `snake_case` unless this conflicts with an existing naming scheme.
 
-Keys components SHOULD use `snake_case` unless this conflicts with an existing naming scheme.
+> Example
+>
+> A capability key defining the partial decoding capability of the blosc codec in the third version of the Zarr specification could look like `zarr/v3/codec/blosc/encode_partial`.
 
-Capabilities or groups of capabilities with aliases can include that alias as a capability.
-For example, if `blosc1` was an acceptable alias for `blosc` in the example above,
-the resulting capability key could be `zarr/v3/codec/blosc/alias/blosc1`.
+Capabilities or groups of capabilities with aliases SHOULD include that alias as a capability.
+
+> Example
+>
+> If `blosc1` was an acceptable alias for `blosc` in the example above,
+the resulting capability key could be `zarr/v3/codec/blosc/alias/blosc1`..
 
 ### Object: Capability
 
 | field | necessity | type | description |
 | ----- | --------- | ---- | ----------- |
-| description | MAY | string | Free text description of feature or level of support |
-| url | MAY | string | URL to definition of capability |
+| description | MAY | string | Free text terse description of feature or level of support |
+| url | MAY | string | URL to canonical definition of capability |
 | support | MAY | boolean, default `false` | Whether this capability is supported |
 
 Definition manifests SHOULD include the `description` and `url` keys.
@@ -114,7 +120,7 @@ The resulting manifest MUST be the result of merging the manifests [as described
 starting with the contents of this manifest,
 followed by the imported manifests in the given order.
 As with all merges, the `imports` array is order-sensitive.
-Imported manifests which themselves import other manifests MUST be resolved in depth-first preorder.
+Imported manifests which themselves import other manifests MUST be resolved in depth-first order.
 
 ### Relative imports
 
@@ -129,12 +135,12 @@ For example, for a layout
 
 ```text
 root/
-  subdir/
-    capabilities.toml
-    sibling.toml
-    subsubdir/
-      nibling.toml
-  publing.toml
+├── subdir/
+│   ├── capabilities.toml  <-- root manifest
+│   ├── sibling.toml
+│   └── subsubdir/
+│       └── nibling.toml
+└── pibling.toml
 ```
 
 where `capabilities.toml` should import all of the other `.toml` files,

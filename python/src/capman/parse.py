@@ -1,15 +1,15 @@
-import tomllib
+import tomli
 import tomli_w
 from typing import IO
 from .types import Manifest
 
 
 def read_toml_str(s: str) -> Manifest:
-    return Manifest.from_dict(tomllib.loads(s))
+    return Manifest.from_dict(tomli.loads(s))
 
 
 def read_toml(f: IO[bytes]) -> Manifest:
-    return Manifest.from_dict(tomllib.load(f))
+    return Manifest.from_dict(tomli.load(f))
 
 
 def write_toml_str(manifest: Manifest) -> str:
